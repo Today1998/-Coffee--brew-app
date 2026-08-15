@@ -1,0 +1,17 @@
+{
+  "short_name": "BrewTracker",
+  "name": "Coffee Brew Tracker",
+  "icons": [
+    {
+      "src": "https://flaticon.com",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#f3f4f6",
+  "theme_color": "#111827",
+  "display": "standalone",
+  "orientation": "portrait"
+}
