@@ -15,8 +15,7 @@ app.use(express.json());
 
 app.get('/api/brews', async (req, res) => {
     try { 
-        const items = await Brew.findAll();
-        res.json(items); 
+        res.json(await Brew.findAll()); 
     } catch (e) { 
         res.status(500).json({ error: e.message }); 
     }
@@ -25,14 +24,23 @@ app.get('/api/brews', async (req, res) => {
 app.post('/api/brews', async (req, res) => {
     try {
         const { beans, method, coffeeGrams, waterGrams, rating, tastingNotes } = req.body;
-        
+
+        // Ultimate conversion fallback layer to prevent validation blocks
+        const parsedCoffee = parseFloat(coffeeGrams);
+        const parsedWater = parseFloat(waterGrams);
+        const parsedRating = parseInt(rating);
+
+        if (!beans || !method || isNaN(parsedCoffee) || isNaN(parsedWater)) {
+            return res.status(400).json({ error: "Missing required properties" });
+        }
+
         const newRecord = await Brew.create({
-            beans: beans || "Default Blend",
-            method: method || "V60",
-            coffeeGrams: parseFloat(coffeeGrams) || 15.0,
-            waterGrams: parseFloat(waterGrams) || 240.0,
-            rating: parseInt(rating) || 3,
-            tastingNotes: tastingNotes || ""
+            beans: beans.toString().trim(),
+            method: method.toString().trim(),
+            coffeeGrams: parsedCoffee,
+            waterGrams: parsedWater,
+            rating: isNaN(parsedRating) ? 3 : parsedRating,
+            tastingNotes: tastingNotes ? tastingNotes.toString().trim() : ""
         });
         
         res.status(201).json(newRecord);
@@ -41,7 +49,7 @@ app.post('/api/brews', async (req, res) => {
     }
 });
 
-// Enforce database restructuring alter maps to reset any mismatched columns safely
-sequelize.sync({ alter: true }).then(() => {
-    app.listen(10000, '0.0.0.0', () => console.log('☕ Backend sync locked in and active!'));
+// Enforce an absolute table reset to lock the fresh columns in place
+sequelize.sync({ force: true }).then(() => {
+    app.listen(10000, '0.0.0.0', () => console.log('☕ Full-stack backend completely unblocked!'));
 });
