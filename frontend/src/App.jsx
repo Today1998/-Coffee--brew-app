@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+const API_URL = '/api/brews';
 
-// Direct production connection to your live Render API server
-https://coffee-brew-app.onrender.comconst API_URL = 'https://onrender.com';
+https://coffee-brew-app.onrender.comconst API_URL = 
+'https://onrender.com';
 
 
 function App() {
