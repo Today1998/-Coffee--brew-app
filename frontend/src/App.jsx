@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+// ❌ DELETE THIS OLD RELATIVE PATH LINE:
+// const API_URL = '/api/brews';
 
-const API_URL = 'http://localhost:5000/api/brews';
+// ✅ REPLACE IT WITH YOUR REAL LIVE RENDER ADDRESS STRING:
+const API_URL = 'https://onrender.com';
 
 function App() {
   const [brews, setBrews] = useState([]);
