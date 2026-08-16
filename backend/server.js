@@ -13,7 +13,6 @@ app.use(cors({
 
 app.use(express.json());
 
-// Main listings route matching database properties cleanly
 app.get('/api/brews', async (req, res) => {
     try { 
         const items = await Brew.findAll();
@@ -23,14 +22,12 @@ app.get('/api/brews', async (req, res) => {
     }
 });
 
-// Post creation handler matching custom form models dynamically
 app.post('/api/brews', async (req, res) => {
     try {
         const { beans, method, coffeeGrams, waterGrams, rating, tastingNotes } = req.body;
         
-        // Dynamic map mapping incoming properties cleanly to Sequelize attributes
         const newRecord = await Brew.create({
-            beans: beans || "Unknown Blend",
+            beans: beans || "Default Blend",
             method: method || "V60",
             coffeeGrams: parseFloat(coffeeGrams) || 15.0,
             waterGrams: parseFloat(waterGrams) || 240.0,
@@ -44,6 +41,7 @@ app.post('/api/brews', async (req, res) => {
     }
 });
 
-sequelize.sync().then(() => {
-    app.listen(10000, '0.0.0.0', () => console.log('☕ Backend unblocked and ready!'));
+// Enforce database restructuring alter maps to reset any mismatched columns safely
+sequelize.sync({ alter: true }).then(() => {
+    app.listen(10000, '0.0.0.0', () => console.log('☕ Backend sync locked in and active!'));
 });

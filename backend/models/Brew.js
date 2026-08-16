@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db'); // This targets the newly moved db.js perfectly
+const sequelize = require('../db');
 
 const Brew = sequelize.define('Brew', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -9,5 +9,8 @@ const Brew = sequelize.define('Brew', {
     waterGrams: { type: DataTypes.FLOAT, allowNull: false },
     rating: { type: DataTypes.INTEGER, allowNull: false },
     tastingNotes: { type: DataTypes.TEXT, allowNull: true }
+}, {
+    timestamps: true
 });
+
 module.exports = Brew;
