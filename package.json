@@ -1,0 +1,1 @@
+{"name":"backend","version":"1.0.0","main":"server.js","dependencies":{"cors":"^2.8.5","dotenv":"^17.4.2","express":"^4.19.2","sequelize":"^6.37.3","sqlite3":"^5.1.7"}}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 // 🌟 DIRECT PRODUCTION ROUTING POINTING TO YOUR VERIFIED LIVE RENDER APP
-const API_URL = 'https://onrender.com';
+const API_URL = '/api/brews';
 
 function App() {
   const [brews, setBrews] = useState([]);
