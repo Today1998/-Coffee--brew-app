@@ -5,7 +5,6 @@ const Brew = require('./models/Brew');
 
 const app = express();
 
-// 🌟 ALLOW ALL CROSS-ORIGIN HEADERS FOR VERCEL DOMAINS
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -14,6 +13,7 @@ app.use(cors({
 
 app.use(express.json());
 
+// Main listings route matching database properties cleanly
 app.get('/api/brews', async (req, res) => {
     try { 
         const items = await Brew.findAll();
@@ -23,15 +23,27 @@ app.get('/api/brews', async (req, res) => {
     }
 });
 
+// Post creation handler matching custom form models dynamically
 app.post('/api/brews', async (req, res) => {
-    try { 
-        const newItem = await Brew.create(req.body);
-        res.status(201).json(newItem); 
+    try {
+        const { beans, method, coffeeGrams, waterGrams, rating, tastingNotes } = req.body;
+        
+        // Dynamic map mapping incoming properties cleanly to Sequelize attributes
+        const newRecord = await Brew.create({
+            beans: beans || "Unknown Blend",
+            method: method || "V60",
+            coffeeGrams: parseFloat(coffeeGrams) || 15.0,
+            waterGrams: parseFloat(waterGrams) || 240.0,
+            rating: parseInt(rating) || 3,
+            tastingNotes: tastingNotes || ""
+        });
+        
+        res.status(201).json(newRecord);
     } catch (e) { 
         res.status(400).json({ error: e.message }); 
     }
 });
 
 sequelize.sync().then(() => {
-    app.listen(10000, '0.0.0.0', () => console.log('☕ Backend fully open to Vercel traffic on port 10000!'));
+    app.listen(10000, '0.0.0.0', () => console.log('☕ Backend unblocked and ready!'));
 });
